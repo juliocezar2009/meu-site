@@ -191,12 +191,21 @@ function mostrarResultadoFinal() {
   }
   document.getElementById("resultadoFinal").innerText = `Pontuação final da empresa: ${resultado} / 100`;
 }
+
  function mostrarGrafico() {
-  const energia = parseFloat(document.getElementById("sim_energia").value) || 0;
-  const agua = parseFloat(document.getElementById("sim_agua").value) || 0;
-  const co2 = parseFloat(document.getElementById("sim_co2").value) || 0;
+  // Captura os valores reais
+  const energiaReal = parseFloat(document.getElementById("sim_energia").value) || 0;
+  const aguaReal = parseFloat(document.getElementById("sim_agua").value) || 0;
+  const co2Real = parseFloat(document.getElementById("sim_co2").value) || 0;
   const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
   const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
+
+  // Normalização dos dados
+  const energiaNorm = ((energiaReal / 100000) * 100).toFixed(2);
+  const aguaNorm = ((aguaReal / 1000000) * 100).toFixed(2);
+  const co2Norm = ((co2Real / 500) * 100).toFixed(2);
+  const recicladoNorm = reciclado.toFixed(2);
+  const renovavelNorm = renovavel.toFixed(2);
 
   const ctx = document.getElementById('graficoResultados').getContext('2d');
 
@@ -210,11 +219,11 @@ function mostrarResultadoFinal() {
       labels: ['Energia', 'Água', 'CO₂', 'Reciclado', 'Renovável'],
       datasets: [{
         label: 'RADAR ECOLÓGICO',
-        data: [energia, agua, co2, reciclado, renovavel],
-        backgroundColor: 'rgba(46,139,87,0.3)',    // verde escuro semi-transparente
-        borderColor: 'rgba(46,139,87,1)',          // verde escuro borda
+        data: [energiaNorm, aguaNorm, co2Norm, recicladoNorm, renovavelNorm],
+        backgroundColor: 'rgba(46,139,87,0.3)',
+        borderColor: 'rgba(46,139,87,1)',
         borderWidth: 3,
-        pointBackgroundColor: 'rgba(0,100,0,1)',   // verde mais escuro para os pontos
+        pointBackgroundColor: 'rgba(0,100,0,1)',
         pointRadius: 7,
         pointHoverRadius: 9,
         pointBorderColor: '#fff',
