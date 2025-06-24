@@ -4,87 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SimulaVerde</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #c1f4a4;
-    }
-    header {
-      background-color: #91e676;
-      padding: 20px;
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
-    }
-    .buttons {
-      width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .buttons button {
-      padding: 20px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 2px 2px 5px #999;
-    }
-    .info-box {
-      margin-top: 20px;
-      background: #ddd;
-      height: 80px;
-      width: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      font-weight: bold;
-    }
-    .visual {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .visual img {
-      max-width: 100%;
-      height: auto;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 400px;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-    }
-    .fechar {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .fechar:hover {
-      color: black;
-    }
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #c1f4a4; }
+    header { background-color: #91e676; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; }
+    .container { display: flex; flex-wrap: wrap; padding: 20px; }
+    .buttons { width: 300px; display: flex; flex-direction: column; gap: 20px; }
+    .buttons button { padding: 20px; font-size: 16px; cursor: pointer; box-shadow: 2px 2px 5px #999; }
+    .info-box { margin-top: 20px; background: #ddd; height: 80px; width: 80px; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: bold; }
+    .visual { flex: 1; display: flex; justify-content: center; align-items: center; }
+    .visual img { max-width: 100%; height: auto; }
+    .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+    .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 400px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+    .fechar { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .fechar:hover { color: black; }
   </style>
 </head>
 <body>
@@ -117,9 +50,7 @@
     <button onclick="abrirModal()">CALCULAR % RECICLAGEM</button>
     <button onclick="abrirModalRenovavel()">CALCULAR % MP RENOVÁVEL</button>
 
-    <div class="info-box">
-      CO₂<br>Rec.<br>Rec.
-    </div>
+    <div class="info-box">CO₂<br>Rec.<br>Rec.</div>
   </div>
 
   <div class="visual">
@@ -127,11 +58,9 @@
   </div>
 </div>
 
-<!-- GRÁFICO -->
 <canvas id="graficoResultados" width="400" height="300" style="margin: 20px auto; display: block;"></canvas>
 
-<!-- MODAIS -->
-<!-- Modal de Reciclagem -->
+<!-- Modal Reciclagem -->
 <div id="modalReciclagem" class="modal">
   <div class="modal-content">
     <span class="fechar" onclick="fecharModal()">&times;</span>
@@ -193,12 +122,14 @@
   </div>
 </div>
 
-<!-- Scripts -->
 <script>
 function mostrarSobre() {
-  alert("ESTE SIMULADOR MEDE A PEGADA ECOLÓGICA DE EMPRESAS COM BASE NO CONSUMO DE RECURSOS E PRÁTICAS SUSTENTÁVEIS.\n\n" +"SIMULADOR DESENVOLVIDO PELA TURMA DE APRENDIZAGEM INDUSTRIAL - APIM 2024/2 V1\n" +"UNIDADE CURRICULAR DE PROCESSO DE LOGÍSTICA, CONTROLE DE MATERIAIS E ALMOXARIFADO.");;
+  alert(
+    "ESTE SIMULADOR MEDE A PEGADA ECOLÓGICA DE EMPRESAS COM BASE NO CONSUMO DE RECURSOS E PRÁTICAS SUSTENTÁVEIS.\n\n" +
+    "SIMULADOR DESENVOLVIDO PELA TURMA DE APRENDIZAGEM INDUSTRIAL - APIM 2024/2 V1\n" +
+    "UNIDADE CURRICULAR DE PROCESSO DE LOGÍSTICA, CONTROLE DE MATERIAIS E ALMOXARIFADO."
+  );
 }
-
 function calcularPegadaCO2() {
   const energia = parseFloat(document.getElementById("energia").value) || 0;
   const agua = parseFloat(document.getElementById("agua").value) || 0;
@@ -207,13 +138,8 @@ function calcularPegadaCO2() {
   const resultado = (energia * 0.5) + (agua * 0.01) + (diesel * 2.6) + (gasolina * 2.3);
   document.getElementById("resultadoCO2").innerText = `Pegada estimada de CO₂: ${resultado.toFixed(2)} kg`;
 }
-
-function abrirModal() {
-  document.getElementById("modalReciclagem").style.display = "block";
-}
-function fecharModal() {
-  document.getElementById("modalReciclagem").style.display = "none";
-}
+function abrirModal() { document.getElementById("modalReciclagem").style.display = "block"; }
+function fecharModal() { document.getElementById("modalReciclagem").style.display = "none"; }
 function calcularReciclagem() {
   const reciclados = parseFloat(document.getElementById("reciclados").value);
   const gerados = parseFloat(document.getElementById("gerados").value);
@@ -224,12 +150,8 @@ function calcularReciclagem() {
   const resultado = (reciclados / gerados) * 100;
   document.getElementById("resultadoReciclagem").value = resultado.toFixed(2) + "%";
 }
-function abrirModalRenovavel() {
-  document.getElementById("modalRenovavel").style.display = "block";
-}
-function fecharModalRenovavel() {
-  document.getElementById("modalRenovavel").style.display = "none";
-}
+function abrirModalRenovavel() { document.getElementById("modalRenovavel").style.display = "block"; }
+function fecharModalRenovavel() { document.getElementById("modalRenovavel").style.display = "none"; }
 function calcularRenovavel() {
   const renovavel = parseFloat(document.getElementById("mpRenovavel").value);
   const total = parseFloat(document.getElementById("mpTotal").value);
@@ -240,12 +162,8 @@ function calcularRenovavel() {
   const resultado = (renovavel / total) * 100;
   document.getElementById("resultadoRenovavel").value = resultado.toFixed(2) + "%";
 }
-function abrirModalSimulacao() {
-  document.getElementById("modalSimulacao").style.display = "block";
-}
-function fecharModalSimulacao() {
-  document.getElementById("modalSimulacao").style.display = "none";
-}
+function abrirModalSimulacao() { document.getElementById("modalSimulacao").style.display = "block"; }
+function fecharModalSimulacao() { document.getElementById("modalSimulacao").style.display = "none"; }
 function calcularSimulacao() {
   const empresa = document.getElementById("empresa").value.trim();
   const setor = document.getElementById("setor").value;
@@ -254,10 +172,12 @@ function calcularSimulacao() {
   const co2 = parseFloat(document.getElementById("sim_co2").value) || 0;
   const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
   const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
+
   if (!empresa || !setor) {
     alert("Preencha todos os campos obrigatórios (empresa e setor).");
     return;
   }
+
   let pontuacao = 100 - (energia * 0.05) - (agua * 0.03) - (co2 * 0.1) + (reciclado * 0.2) + (renovavel * 0.3);
   pontuacao = Math.max(0, Math.min(100, pontuacao));
   document.getElementById("resultadoSimulacao").value = pontuacao.toFixed(2);
@@ -271,69 +191,132 @@ function mostrarResultadoFinal() {
   }
   document.getElementById("resultadoFinal").innerText = `Pontuação final da empresa: ${resultado} / 100`;
 }
-
-function mostrarGrafico() {
+ function mostrarGrafico() {
   const energia = parseFloat(document.getElementById("sim_energia").value) || 0;
   const agua = parseFloat(document.getElementById("sim_agua").value) || 0;
   const co2 = parseFloat(document.getElementById("sim_co2").value) || 0;
   const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
   const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
-  const resultado = parseFloat(document.getElementById("resultadoSimulacao").value) || 0;
 
   const ctx = document.getElementById('graficoResultados').getContext('2d');
+
   if (window.graficoSimulacao) {
     window.graficoSimulacao.destroy();
   }
 
   window.graficoSimulacao = new Chart(ctx, {
-    type: 'bar',
+    type: 'radar',
     data: {
-      labels: ['Energia (kWh)', 'Água (L)', 'CO₂ (kg)', '% Reciclado', '% Renovável', 'Pontuação'],
+      labels: ['Energia', 'Água', 'CO₂', 'Reciclado', 'Renovável'],
       datasets: [{
-        label: 'Resultados da Simulação',
-        data: [energia, agua, co2, reciclado, renovavel, resultado],
-        backgroundColor: ['#4caf50', '#2196f3', '#f44336', '#ff9800', '#9c27b0', '#3f51b5']
+        label: 'RADAR ECOLÓGICO',
+        data: [energia, agua, co2, reciclado, renovavel],
+        backgroundColor: 'rgba(46,139,87,0.3)',    // verde escuro semi-transparente
+        borderColor: 'rgba(46,139,87,1)',          // verde escuro borda
+        borderWidth: 3,
+        pointBackgroundColor: 'rgba(0,100,0,1)',   // verde mais escuro para os pontos
+        pointRadius: 7,
+        pointHoverRadius: 9,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2
       }]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: { display: false },
-        title: {
-          display: true,
-          text: 'Desempenho Ecológico da Empresa'
+      scales: {
+        r: {
+          min: 0,
+          max: 100,
+          ticks: {
+            stepSize: 20,
+            color: '#222',
+            backdropColor: 'rgba(255,255,255,0.7)',
+            backdropPadding: 4,
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          },
+          grid: {
+            color: 'rgba(100,100,100,0.5)',
+            lineWidth: 1.5
+          },
+          angleLines: {
+            color: 'rgba(100,100,100,0.5)',
+            lineWidth: 1.5
+          },
+          pointLabels: {
+            color: '#222',
+            font: {
+              size: 16,
+              weight: 'bold'
+            }
+          }
         }
       },
-      scales: {
-        y: { beginAtZero: true }
+      elements: {
+        line: {
+          tension: 0.3
+        }
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'RADAR ECOLÓGICO',
+          color: '#222',
+          font: {
+            size: 22,
+            weight: 'bold'
+          }
+        },
+        legend: {
+          display: false
+        }
       }
     }
   });
 }
 
+
 function resetarTudo() {
-  // Resetar inputs principais
   document.querySelectorAll("input[type='number'], input[type='text']").forEach(input => input.value = "");
   document.getElementById("setor").value = "";
   document.getElementById("empresa").value = "";
-
-  // Limpar resultados exibidos
   document.getElementById("resultadoSimulacao").value = "";
   document.getElementById("resultadoFinal").innerText = "";
   document.getElementById("resultadoCO2").innerText = "";
   document.getElementById("resultadoReciclagem").value = "";
   document.getElementById("resultadoRenovavel").value = "";
-
-  // Destruir gráfico se existir
-  if (window.graficoSimulacao) {
-    window.graficoSimulacao.destroy();
-  }
-
+  if (window.graficoSimulacao) { window.graficoSimulacao.destroy(); }
   alert("Todos os dados foram resetados!");
 }
-
-
 </script>
-
 </body>
 </html>
+<br>
+<br>
+<h2 style="
+  text-align: center;
+  font-size: 18px;
+  color: #2e8b57; /* Verde escuro */
+  background: linear-gradient(90deg, #c1f4a4, #91e676); /* Gradiente suave que combina com o header */
+  padding: 10px;
+  border-radius: 8px;
+  margin: 0;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+">
+  Desenvolvido por: Julio Cezar Ferreira França e Prof. Cristian Rebonatto
+</h2>
+<h2 style="
+  text-align: center;
+  font-size: 18px;
+  color: #2e8b57;
+  padding: 10x;
+  font-weight: bold;
+  margin: 30px 0;
+">
+  Todos os direitos reservados
+</h2>
+
+<br>

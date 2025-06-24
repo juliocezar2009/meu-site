@@ -1,0 +1,38 @@
+{
+  const energia = parseFloat(document.getElementById("sim_energia").value) || 0;
+  const agua = parseFloat(document.getElementById("sim_agua").value) || 0;
+  const co2 = parseFloat(document.getElementById("sim_co2").value) || 0;
+  const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
+  const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
+  const resultado = parseFloat(document.getElementById("resultadoSimulacao").value) || 0;
+
+  const ctx = document.getElementById('graficoResultados').getContext('2d');
+  if (window.graficoSimulacao) {
+    window.graficoSimulacao.destroy();
+  }
+
+  window.graficoSimulacao = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Energia (kWh)', 'Água (L)', 'CO₂ (kg)', '% Reciclado', '% Renovável', 'Pontuação'],
+      datasets: [{
+        label: 'Resultados da Simulação',
+        data: [energia, agua, co2, reciclado, renovavel, resultado],
+        backgroundColor: ['#4caf50', '#2196f3', '#f44336', '#ff9800', '#9c27b0', '#3f51b5']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Desempenho Ecológico da Empresa'
+        }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
