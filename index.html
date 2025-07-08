@@ -1,306 +1,468 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SimulaVerde</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #c1f4a4; }
-    header { background-color: #91e676; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; }
-    .container { display: flex; flex-wrap: wrap; padding: 20px; }
-    .buttons { width: 300px; display: flex; flex-direction: column; gap: 20px; }
-    .buttons button { padding: 20px; font-size: 16px; cursor: pointer; box-shadow: 2px 2px 5px #999; }
-    .info-box { margin-top: 20px; background: #ddd; height: 80px; width: 80px; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: bold; }
-    .visual { flex: 1; display: flex; justify-content: center; align-items: center; }
-    .visual img { max-width: 100%; height: auto; }
-    .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
-    .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 400px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
-    .fechar { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-    .fechar:hover { color: black; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #c1f4a4;
+    }
+
+    header {
+      background-color: #91e676;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+
+    .buttons {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .buttons button {
+      padding: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px #999;
+    }
+
+    .info-box {
+      margin-top: 20px;
+      background: #ddd;
+      height: 80px;
+      width: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-weight: bold;
+    }
+
+    .visual {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .visual img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 400px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .fechar {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .fechar:hover {
+      color: black;
+    }
+
+    .info-box-topo {
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  background-color: #fefefe;
+  color: #333;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  width: 250px;
+  font-size: 14px;
+  z-index: 9;
+}
+
   </style>
 </head>
+
 <body>
 
-<header>SimulaVerde - Simulador Empresarial de Pegada Ecológica</header>
+  <header>SimulaVerde - Negócios inteligentes gerando impacto consciente!</header>
 
-<div class="container">
-  <div class="buttons">
-    <button onclick="mostrarSobre()">SOBRE O SIMULADOR</button>
-    <button onclick="abrirModalSimulacao()">INICIAR SIMULAÇÃO</button>
-    <button onclick="mostrarResultadoFinal()">VER RESULTADOS</button>
-    <button onclick="mostrarGrafico()">MOSTRAR GRÁFICO</button>
-    <button onclick="resetarTudo()">RESETAR</button>
-    <button onclick="calcularPegadaCO2()">CALCULAR PEGADA CO₂</button>
+  <div class="container">
+    <div class="buttons">
 
-    <div id="resultadoFinal" style="margin-top: 10px; font-weight: bold;"></div>
-    <div id="resultadoCO2" style="margin-top: 10px; font-weight: bold;"></div>
+      <button onclick="mostrarSobre()">SOBRE O SIMULADOR</button>
+      <button onclick="abrirModalSimulacao()">INICIAR SIMULAÇÃO</button>
+      <button onclick="mostrarResultadoFinal()">VER RESULTADOS</button>
+      <button onclick="mostrarGrafico()">MOSTRAR GRÁFICO</button>
+      <button onclick="resetarTudo()">RESETAR</button>
+      <button onclick="calcularPegadaCO2()">CALCULAR PEGADA CO₂</button>
 
-    <div>
-      <label>Energia Consumida (kWh):</label>
-      <input type="number" id="energia"><br>
-      <label>Consumo de Água (litros):</label>
-      <input type="number" id="agua"><br>
-      <label>Consumo de Óleo Diesel (litros):</label>
-      <input type="number" id="diesel"><br>
-      <label>Consumo de Gasolina (litros):</label>
-      <input type="number" id="gasolina"><br><br>
+
+      <div id="resultadoFinal" style="margin-top: 10px; font-weight: bold;"></div>
+      <div id="resultadoCO2" style="margin-top: 10px; font-weight: bold;"></div>
+
+      <div>
+        <label>Energia Consumida (kWh):</label>
+        <input type="number" id="energia"><br>
+        <label>Consumo de Água (litros):</label>
+        <input type="number" id="agua"><br>
+        <label>Consumo de Óleo Diesel (litros):</label>
+        <input type="number" id="diesel"><br>
+        <label>Consumo de Gasolina (litros):</label>
+        <input type="number" id="gasolina"><br><br>
+      </div>
+
+      <button onclick="abrirModal()">CALCULAR % RECICLAGEM</button>
+      <button onclick="abrirModalRenovavel()">CALCULAR % MP RENOVÁVEL</button>
+
+      <div class="info-box">CO₂<br>Rec.<br>Rec.</div>
     </div>
+  
+    <div class="visual" style="position: relative;">
+  <img src="https://cdn-icons-png.flaticon.com/512/4329/4329974.png" alt="Visual Simulador">
 
-    <button onclick="abrirModal()">CALCULAR % RECICLAGEM</button>
-    <button onclick="abrirModalRenovavel()">CALCULAR % MP RENOVÁVEL</button>
-
-    <div class="info-box">CO₂<br>Rec.<br>Rec.</div>
-  </div>
-
-  <div class="visual">
-    <img src="https://cdn-icons-png.flaticon.com/512/4329/4329974.png" alt="Visual Simulador">
-  </div>
+ <!-- Botões sobrepostos à imagem -->
+<div style="position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 10px;">
+  <button onclick="mostrarSobre()">ℹ️ SOBRE O SIMULADOR</button>
+  <button onclick="mostrarModalContato()">📞 CONTATO</button>
 </div>
 
-<canvas id="graficoResultados" width="400" height="300" style="margin: 20px auto; display: block;"></canvas>
 
-<!-- Modal Reciclagem -->
-<div id="modalReciclagem" class="modal">
-  <div class="modal-content">
-    <span class="fechar" onclick="fecharModal()">&times;</span>
-    <h3>CÁLCULO % DE RESÍDUOS RECICLADOS</h3>
-    <label>RESÍDUOS RECICLADOS</label><br>
-    <input type="number" id="reciclados"><br><br>
-    <label>RESÍDUOS GERADOS</label><br>
-    <input type="number" id="gerados"><br><br>
-    <label>RESULTADO</label><br>
-    <input type="text" id="resultadoReciclagem" readonly><br><br>
-    <button onclick="calcularReciclagem()">CALCULAR</button>
   </div>
+  <div id="info1" class="info-box-topo" style="display: none;"></div>
+  <div id="info2" class="info-box-topo" style="display: none;"></div>
 </div>
 
-<!-- Modal Renovável -->
-<div id="modalRenovavel" class="modal">
-  <div class="modal-content">
-    <span class="fechar" onclick="fecharModalRenovavel()">&times;</span>
-    <h3>CÁLCULO % MP RENOVÁVEL</h3>
-    <label>MATÉRIA PRIMA RENOVÁVEL (KG):</label><br>
-    <input type="number" id="mpRenovavel"><br><br>
-    <label>MATÉRIA PRIMA TOTAL (KG):</label><br>
-    <input type="number" id="mpTotal"><br><br>
-    <label>RESULTADO:</label><br>
-    <input type="text" id="resultadoRenovavel" readonly><br><br>
-    <button onclick="calcularRenovavel()">CALCULAR</button>
   </div>
-</div>
 
-<!-- Modal Simulação -->
-<div id="modalSimulacao" class="modal">
-  <div class="modal-content">
-    <span class="fechar" onclick="fecharModalSimulacao()">&times;</span>
-    <h3>INICIAR SIMULAÇÃO ECOLÓGICA</h3>
-    <label>Empresa:</label><br>
-    <input type="text" id="empresa"><br><br>
-    <label>Setor:</label><br>
-    <select id="setor">
-      <option value="">Selecione</option>
-      <option>Indústria</option>
-      <option>Serviços</option>
-      <option>Comércio</option>
-      <option>Agropecuária</option>
-      <option>Tecnologia</option>
-    </select><br><br>
-    <label>Energia (kWh):</label><br>
-    <input type="number" id="sim_energia"><br><br>
-    <label>Água (litros):</label><br>
-    <input type="number" id="sim_agua"><br><br>
-    <label>Emissões CO₂ (kg):</label><br>
-    <input type="number" id="sim_co2"><br><br>
-    <label>Matéria-Prima Reciclada (%):</label><br>
-    <input type="number" id="sim_reciclado"><br><br>
-    <label>Matéria-Prima Renovável (%):</label><br>
-    <input type="number" id="sim_renovavel"><br><br>
-    <label>Pontuação Final:</label><br>
-    <input type="text" id="resultadoSimulacao" readonly><br><br>
-    <button onclick="calcularSimulacao()">CALCULAR</button>
+  <canvas id="graficoResultados" width="400" height="300" style="margin: 20px auto; display: block;"></canvas>
+  <p style="text-align: center; font-weight: bold; font-size: 18px;">
+    Pontuação Final: <span id="pontuacaoFinal">-</span>
+  </p>
+
+  <!-- Modal Reciclagem -->
+  <div id="modalReciclagem" class="modal">
+    <div class="modal-content">
+      <span class="fechar" onclick="fecharModal()">&times;</span>
+      <h3>CÁLCULO % DE RESÍDUOS RECICLADOS</h3>
+      <label>RESÍDUOS RECICLADOS</label><br>
+      <input type="number" id="reciclados"><br><br>
+      <label>RESÍDUOS GERADOS</label><br>
+      <input type="number" id="gerados"><br><br>
+      <label>RESULTADO</label><br>
+      <input type="text" id="resultadoReciclagem" readonly><br><br>
+      <button onclick="calcularReciclagem()">CALCULAR</button>
+    </div>
   </div>
-</div>
 
-<script>
-function mostrarSobre() {
-  alert(
-    "ESTE SIMULADOR MEDE A PEGADA ECOLÓGICA DE EMPRESAS COM BASE NO CONSUMO DE RECURSOS E PRÁTICAS SUSTENTÁVEIS.\n\n" +
-    "SIMULADOR DESENVOLVIDO PELA TURMA DE APRENDIZAGEM INDUSTRIAL - APIM 2024/2 V1\n" +
-    "UNIDADE CURRICULAR DE PROCESSO DE LOGÍSTICA, CONTROLE DE MATERIAIS E ALMOXARIFADO."
-  );
-}
-function calcularPegadaCO2() {
-  const energia = parseFloat(document.getElementById("energia").value) || 0;
-  const agua = parseFloat(document.getElementById("agua").value) || 0;
-  const diesel = parseFloat(document.getElementById("diesel").value) || 0;
-  const gasolina = parseFloat(document.getElementById("gasolina").value) || 0;
-  const resultado = (energia * 0.5) + (agua * 0.01) + (diesel * 2.6) + (gasolina * 2.3);
-  document.getElementById("resultadoCO2").innerText = `Pegada estimada de CO₂: ${resultado.toFixed(2)} kg`;
-}
-function abrirModal() { document.getElementById("modalReciclagem").style.display = "block"; }
-function fecharModal() { document.getElementById("modalReciclagem").style.display = "none"; }
-function calcularReciclagem() {
-  const reciclados = parseFloat(document.getElementById("reciclados").value);
-  const gerados = parseFloat(document.getElementById("gerados").value);
-  if (isNaN(reciclados) || isNaN(gerados) || gerados === 0) {
-    alert("Por favor, insira valores válidos.");
-    return;
-  }
-  const resultado = (reciclados / gerados) * 100;
-  document.getElementById("resultadoReciclagem").value = resultado.toFixed(2) + "%";
-}
-function abrirModalRenovavel() { document.getElementById("modalRenovavel").style.display = "block"; }
-function fecharModalRenovavel() { document.getElementById("modalRenovavel").style.display = "none"; }
-function calcularRenovavel() {
-  const renovavel = parseFloat(document.getElementById("mpRenovavel").value);
-  const total = parseFloat(document.getElementById("mpTotal").value);
-  if (isNaN(renovavel) || isNaN(total) || total === 0) {
-    alert("Por favor, insira valores válidos.");
-    return;
-  }
-  const resultado = (renovavel / total) * 100;
-  document.getElementById("resultadoRenovavel").value = resultado.toFixed(2) + "%";
-}
-function abrirModalSimulacao() { document.getElementById("modalSimulacao").style.display = "block"; }
-function fecharModalSimulacao() { document.getElementById("modalSimulacao").style.display = "none"; }
-function calcularSimulacao() {
-  const empresa = document.getElementById("empresa").value.trim();
-  const setor = document.getElementById("setor").value;
-  const energia = parseFloat(document.getElementById("sim_energia").value) || 0;
-  const agua = parseFloat(document.getElementById("sim_agua").value) || 0;
-  const co2 = parseFloat(document.getElementById("sim_co2").value) || 0;
-  const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
-  const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
+  <!-- Modal Renovável -->
+  <div id="modalRenovavel" class="modal">
+    <div class="modal-content">
+      <span class="fechar" onclick="fecharModalRenovavel()">&times;</span>
+      <h3>CÁLCULO % MP RENOVÁVEL</h3>
+      <label>MATÉRIA PRIMA RENOVÁVEL (KG):</label><br>
+      <input type="number" id="mpRenovavel"><br><br>
+      <label>MATÉRIA PRIMA TOTAL (KG):</label><br>
+      <input type="number" id="mpTotal"><br><br>
+      <label>RESULTADO:</label><br>
+      <input type="text" id="resultadoRenovavel" readonly><br><br>
+      <button onclick="calcularRenovavel()">CALCULAR</button>
+    </div>
+  </div>
 
-  if (!empresa || !setor) {
-    alert("Preencha todos os campos obrigatórios (empresa e setor).");
-    return;
-  }
+  <!-- Modal Simulação -->
+  <div id="modalSimulacao" class="modal">
+    <div class="modal-content">
+      <span class="fechar" onclick="fecharModalSimulacao()">&times;</span>
+      <h3>INICIAR SIMULAÇÃO ECOLÓGICA</h3>
+      <label>Empresa:</label><br>
+      <input type="text" id="empresa"><br><br>
+      <label>Setor:</label><br>
+      <select id="setor">
+        <option value="">Selecione</option>
+        <option>Indústria</option>
+        <option>Serviços</option>
+        <option>Comércio</option>
+        <option>Agropecuária</option>
+        <option>Tecnologia</option>
+      </select><br><br>
+      <label>Energia (kWh):</label><br>
+      <input type="number" id="sim_energia"><br><br>
+      <label>Água (litros):</label><br>
+      <input type="number" id="sim_agua"><br><br>
+      <label>Emissões CO₂ (kg):</label><br>
+      <input type="number" id="sim_co2"><br><br>
+      <label>Matéria-Prima Reciclada (%):</label><br>
+      <input type="number" id="sim_reciclado"><br><br>
+      <label>Matéria-Prima Renovável (%):</label><br>
+      <input type="number" id="sim_renovavel"><br><br>
+      <label>Pontuação Final:</label><br>
+      <input type="text" id="resultadoSimulacao" readonly><br><br>
+      <button onclick="calcularSimulacao()">CALCULAR</button>
+    </div>
+  </div>
 
-  let pontuacao = 100 - (energia * 0.05) - (agua * 0.03) - (co2 * 0.1) + (reciclado * 0.2) + (renovavel * 0.3);
-  pontuacao = Math.max(0, Math.min(100, pontuacao));
-  document.getElementById("resultadoSimulacao").value = pontuacao.toFixed(2);
-  alert(`Simulação concluída!\nPontuação Ecológica: ${pontuacao.toFixed(2)} / 100`);
-}
-function mostrarResultadoFinal() {
-  const resultado = document.getElementById("resultadoSimulacao").value;
-  if (!resultado) {
-    alert("Por favor, realize a simulação antes de ver os resultados.");
-    return;
-  }
-  document.getElementById("resultadoFinal").innerText = `Pontuação final da empresa: ${resultado} / 100`;
-}
-
- function mostrarGrafico() {
-  // Captura os valores reais
-  const energiaReal = parseFloat(document.getElementById("sim_energia").value) || 0;
-  const aguaReal = parseFloat(document.getElementById("sim_agua").value) || 0;
-  const co2Real = parseFloat(document.getElementById("sim_co2").value) || 0;
-  const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
-  const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
-
-  // Normalização dos dados
-  const energiaNorm = ((energiaReal / 100000) * 100).toFixed(2);
-  const aguaNorm = ((aguaReal / 1000000) * 100).toFixed(2);
-  const co2Norm = ((co2Real / 500) * 100).toFixed(2);
-  const recicladoNorm = reciclado.toFixed(2);
-  const renovavelNorm = renovavel.toFixed(2);
-
-  const ctx = document.getElementById('graficoResultados').getContext('2d');
-
-  if (window.graficoSimulacao) {
-    window.graficoSimulacao.destroy();
-  }
-
-  window.graficoSimulacao = new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: ['Energia', 'Água', 'CO₂', 'Reciclado', 'Renovável'],
-      datasets: [{
-        label: 'RADAR ECOLÓGICO',
-        data: [energiaNorm, aguaNorm, co2Norm, recicladoNorm, renovavelNorm],
-        backgroundColor: 'rgba(46,139,87,0.3)',
-        borderColor: 'rgba(46,139,87,1)',
-        borderWidth: 3,
-        pointBackgroundColor: 'rgba(0,100,0,1)',
-        pointRadius: 7,
-        pointHoverRadius: 9,
-        pointBorderColor: '#fff',
-        pointBorderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        r: {
-          min: 0,
-          max: 100,
-          ticks: {
-            stepSize: 20,
-            color: '#222',
-            backdropColor: 'rgba(255,255,255,0.7)',
-            backdropPadding: 4,
-            font: {
-              size: 14,
-              weight: 'bold'
-            }
-          },
-          grid: {
-            color: 'rgba(100,100,100,0.5)',
-            lineWidth: 1.5
-          },
-          angleLines: {
-            color: 'rgba(100,100,100,0.5)',
-            lineWidth: 1.5
-          },
-          pointLabels: {
-            color: '#222',
-            font: {
-              size: 16,
-              weight: 'bold'
-            }
-          }
-        }
-      },
-      elements: {
-        line: {
-          tension: 0.3
-        }
-      },
-      plugins: {
-        title: {
-          display: true,
-          text: 'RADAR ECOLÓGICO',
-          color: '#222',
-          font: {
-            size: 22,
-            weight: 'bold'
-          }
-        },
-        legend: {
-          display: false
-        }
-      }
+  <script>
+    function mostrarSobre() {
+      alert(
+        "ESTE SIMULADOR MEDE A PEGADA ECOLÓGICA DE EMPRESAS COM BASE NO CONSUMO DE RECURSOS E PRÁTICAS SUSTENTÁVEIS.\n\n" +
+        "SIMULADOR DESENVOLVIDO PELA TURMA DE APRENDIZAGEM INDUSTRIAL - APIM 2024/2 V1\n" +
+        "UNIDADE CURRICULAR DE PROCESSO DE LOGÍSTICA, CONTROLE DE MATERIAIS E ALMOXARIFADO."
+      );
     }
-  });
-}
+    function calcularPegadaCO2() {
+      const energia = parseFloat(document.getElementById("energia").value) || 0;
+      const agua = parseFloat(document.getElementById("agua").value) || 0;
+      const diesel = parseFloat(document.getElementById("diesel").value) || 0;
+      const gasolina = parseFloat(document.getElementById("gasolina").value) || 0;
+      const resultado = (energia * 0.5) + (agua * 0.01) + (diesel * 2.6) + (gasolina * 2.3);
+      document.getElementById("resultadoCO2").innerText = `Pegada estimada de CO₂: ${resultado.toFixed(2)} kg`;
+    }
+    function abrirModal() { document.getElementById("modalReciclagem").style.display = "block"; }
+    function fecharModal() { document.getElementById("modalReciclagem").style.display = "none"; }
+    function calcularReciclagem() {
+      const reciclados = parseFloat(document.getElementById("reciclados").value);
+      const gerados = parseFloat(document.getElementById("gerados").value);
+      if (isNaN(reciclados) || isNaN(gerados) || gerados === 0) {
+        alert("Por favor, insira valores válidos.");
+        return;
+      }
+      const resultado = (reciclados / gerados) * 100;
+      document.getElementById("resultadoReciclagem").value = resultado.toFixed(2) + "%";
+    }
+    function abrirModalRenovavel() { document.getElementById("modalRenovavel").style.display = "block"; }
+    function fecharModalRenovavel() { document.getElementById("modalRenovavel").style.display = "none"; }
+    function calcularRenovavel() {
+      const renovavel = parseFloat(document.getElementById("mpRenovavel").value);
+      const total = parseFloat(document.getElementById("mpTotal").value);
+      if (isNaN(renovavel) || isNaN(total) || total === 0) {
+        alert("Por favor, insira valores válidos.");
+        return;
+      }
+      const resultado = (renovavel / total) * 100;
+      document.getElementById("resultadoRenovavel").value = resultado.toFixed(2) + "%";
+    }
+    function abrirModalSimulacao() { document.getElementById("modalSimulacao").style.display = "block"; }
+    function fecharModalSimulacao() { document.getElementById("modalSimulacao").style.display = "none"; }
+    function calcularSimulacao() {
+      const empresa = document.getElementById("empresa").value.trim();
+      const setor = document.getElementById("setor").value;
+      const energia = parseFloat(document.getElementById("sim_energia").value) || 0;
+      const agua = parseFloat(document.getElementById("sim_agua").value) || 0;
+      const co2 = parseFloat(document.getElementById("sim_co2").value) || 0;
+      const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
+      const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
+
+      if (!empresa || !setor) {
+        alert("Preencha todos os campos obrigatórios (empresa e setor).");
+        return;
+      }
+
+      
+      let pontuacao = 100 - (energia * 0.05) - (agua * 0.03) - (co2 * 0.1) + (reciclado * 0.2) + (renovavel * 0.3);
+      pontuacao = Math.max(0, Math.min(100, pontuacao));
+      document.getElementById("resultadoSimulacao").value = pontuacao.toFixed(2);
+      alert(`Simulação concluída!\nPontuação Ecológica: ${pontuacao.toFixed(2)} / 100`);
+    }
+    function mostrarResultadoFinal() {
+      const resultado = document.getElementById("resultadoSimulacao").value;
+      if (!resultado) {
+        alert("Por favor, realize a simulação antes de ver os resultados.");
+        return;
+      }
+      document.getElementById("resultadoFinal").innerText = `Pontuação final da empresa: ${resultado} / 100`;
+    }
+
+    function mostrarGrafico() {
+      const energiaReal = parseFloat(document.getElementById("sim_energia").value) || 0;
+      const aguaReal = parseFloat(document.getElementById("sim_agua").value) || 0;
+      const co2Real = parseFloat(document.getElementById("sim_co2").value) || 0;
+      const reciclado = parseFloat(document.getElementById("sim_reciclado").value) || 0;
+      const renovavel = parseFloat(document.getElementById("sim_renovavel").value) || 0;
+
+      const energiaIndice = Math.max(0, Math.min(100, 100 - ((energiaReal / 10000) * 100)));
+      const aguaIndice = Math.max(0, Math.min(100, 100 - ((aguaReal / 1000000) * 100)));
+      const co2Indice = Math.max(0, Math.min(100, 100 - ((co2Real / 500) * 100)));
+      const recicladoIndice = Math.max(0, Math.min(100, reciclado));
+      const renovavelIndice = Math.max(0, Math.min(100, renovavel));
+
+      const pontuacaoFinal = (energiaIndice + aguaIndice + co2Indice + recicladoIndice + renovavelIndice) / 5;
+      document.getElementById("pontuacaoFinal").innerText = pontuacaoFinal.toFixed(1);
+
+      const ctx = document.getElementById('graficoResultados').getContext('2d');
+      if (window.graficoSimulacao) {
+        window.graficoSimulacao.destroy();
+      }
+
+      window.graficoSimulacao = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: ['Energia', 'Água', 'CO₂', 'Reciclado', 'Renovável'],
+          datasets: [{
+            label: 'RADAR ECOLÓGICO',
+            data: [energiaIndice, aguaIndice, co2Indice, recicladoIndice, renovavelIndice],
+            backgroundColor: 'rgba(46,139,87,0.3)',
+            borderColor: 'rgba(46,139,87,1)',
+            borderWidth: 3,
+            pointBackgroundColor: 'rgba(0,100,0,1)',
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20 }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: 'RADAR ECOLÓGICO',
+              font: {
+                size: 20,
+                weight: 'bold'
+              }
+            },
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    function resetarTudo() {
+      document.querySelectorAll("input[type='number'], input[type='text']").forEach(input => input.value = "");
+      document.getElementById("setor").value = "";
+      document.getElementById("empresa").value = "";
+      document.getElementById("resultadoSimulacao").value = "";
+      document.getElementById("resultadoFinal").innerText = "";
+      document.getElementById("resultadoCO2").innerText = "";
+      document.getElementById("resultadoReciclagem").value = "";
+      document.getElementById("resultadoRenovavel").value = "";
+      document.getElementById("pontuacaoFinal").innerText = "-";  // ← ADICIONE ESTA LINHA
+      if (window.graficoSimulacao) {
+        window.graficoSimulacao.destroy();
+      }
+      alert("Todos os dados foram resetados!");
+    }
+
+    function Contato() {
+      const bloco = document.getElementById("blocoDicas");
+      bloco.style.display = (bloco.style.display === "none") ? "block" : "none";
+    }
 
 
-function resetarTudo() {
-  document.querySelectorAll("input[type='number'], input[type='text']").forEach(input => input.value = "");
-  document.getElementById("setor").value = "";
-  document.getElementById("empresa").value = "";
-  document.getElementById("resultadoSimulacao").value = "";
-  document.getElementById("resultadoFinal").innerText = "";
-  document.getElementById("resultadoCO2").innerText = "";
-  document.getElementById("resultadoReciclagem").value = "";
-  document.getElementById("resultadoRenovavel").value = "";
-  if (window.graficoSimulacao) { window.graficoSimulacao.destroy(); }
-  alert("Todos os dados foram resetados!");
+
+
+function mostrarSobre() {
+  document.getElementById("modalInfoSobre").style.display = "block";
 }
-</script>
+
+function fecharModalSobre() {
+  document.getElementById("modalInfoSobre").style.display = "none";
+}
+
+function mostrarModalContato() {
+  document.getElementById("modalInfoContato").style.display = "block";
+}
+
+function fecharModalContato() {
+  document.getElementById("modalInfoContato").style.display = "none";
+}
+
+  
+  </script>
+  
+  <!-- Modal de Informações (Info 1) -->
+<div id="modalInfoPersonalizado" class="modal">
+  <div class="modal-content" style="background-color: #1e1e1e; color: #fff;">
+    <span class="fechar" onclick="fecharModalSobre()">&times;</span>
+    <h3 style="color: #fff;">Sobre Nós</h3>
+    <p style="margin-top: 10px;">
+      
+    </p>
+    <p>
+      
+      
+    </p>
+    <button onclick="fecharModalSobre()" style="
+      margin-top: 20px;
+      background-color: #ffb6c1;
+      color: #000;
+      border: 2px solid #ffb6c1;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+    ">OK</button>
+  </div>
+</div>
+
+
+
+ <!-- Modal de Informações (Info 2) -->
+<div id="modalInfoPersonalizado" class="modal">
+  <div class="modal-content" style="background-color: #1e1e1e; color: #fff;">
+    <span class="fechar" onclick="fecharModalContato()">&times;</span>
+    <h3 style="color: #fff;">Contato</h3>
+    <p style="margin-top: 10px;">
+      Dhdhdjidisfhuij
+    </p>
+    <p>
+      
+    </p>
+    <button onclick="fecharModalContato()" style="
+      margin-top: 20px;
+      background-color: #ffb6c1;
+      color: #000;
+      border: 2px solid #ffb6c1;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+    ">OK</button>
+  </div>
+</div>
+
 </body>
+
 </html>
 <br>
 <br>
@@ -326,5 +488,6 @@ function resetarTudo() {
   margin: 30px 0;
 ">
   Todos os direitos reservados
+
 </h2>
 <br>
