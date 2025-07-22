@@ -238,6 +238,7 @@
     function mostrarSobre() {
       alert(
         "ESTE SIMULADOR MEDE A PEGADA ECOLÓGICA DE EMPRESAS COM BASE NO CONSUMO DE RECURSOS E PRÁTICAS SUSTENTÁVEIS.\n\n" +
+        "O SIMULADOR PODE SER UTILIZADO PARA FINS EDUCACIONAIS E DIAGNÓSTICO INTERNO DAS EMPRESAS QUE ESTÃO EM FASE INICIAL DE PRÁTICAS SUSTENTÁVEIS. PORTANTO, NÃO DEVE SER UTILIZADO PARA CERTIFICAÇÃO AMBIENTAL.\n\n"+
         "SIMULADOR DESENVOLVIDO PELA TURMA DE APRENDIZAGEM INDUSTRIAL - APIM 2024/2 V1\n" +
         "UNIDADE CURRICULAR DE PROCESSO DE LOGÍSTICA, CONTROLE DE MATERIAIS E ALMOXARIFADO."
       );
@@ -248,7 +249,7 @@
       const diesel = parseFloat(document.getElementById("diesel").value) || 0;
       const gasolina = parseFloat(document.getElementById("gasolina").value) || 0;
       const resultado = (energia * 0.5) + (agua * 0.01) + (diesel * 2.6) + (gasolina * 2.3);
-      document.getElementById("resultadoCO2").innerText = `Pegada estimada de CO₂: ${resultado.toFixed(2)} kg`;
+  document.getElementById("resultadoCO2").innerText = "Pegada estimada de CO₂: " + resultado.toFixed(2) + " kg";
     }
     function abrirModal() { document.getElementById("modalReciclagem").style.display = "block"; }
     function fecharModal() { document.getElementById("modalReciclagem").style.display = "none"; }
@@ -294,7 +295,7 @@
       let pontuacao = 100 - (energia * 0.05) - (agua * 0.03) - (co2 * 0.1) + (reciclado * 0.2) + (renovavel * 0.3);
       pontuacao = Math.max(0, Math.min(100, pontuacao));
       document.getElementById("resultadoSimulacao").value = pontuacao.toFixed(2);
-      alert(`Simulação concluída!\nPontuação Ecológica: ${pontuacao.toFixed(2)} / 100`);
+alert(`Simulação concluída!\nPontuação Ecológica: ${pontuacao.toFixed(2)} / 100`);
     }
     function mostrarResultadoFinal() {
       const resultado = document.getElementById("resultadoSimulacao").value;
@@ -302,7 +303,7 @@
         alert("Por favor, realize a simulação antes de ver os resultados.");
         return;
       }
-      document.getElementById("resultadoFinal").innerText = `Pontuação final da empresa: ${resultado} / 100`;
+document.getElementById("resultadoFinal").innerText = `Pontuação final da empresa: ${resultado} / 100`;
     }
 
     function mostrarGrafico() {
@@ -416,9 +417,9 @@ function fecharModalContato() {
     <span class="fechar" onclick="fecharModalSobreNos()">&times;</span>
     <h3 style="color: #fff;">Sobre Nós</h3>
     <p style="margin-top: 10px;">
-Somos uma equipe formada por alunos e professor do curso de Aprendizagem Industrial na área de Gestão, comprometidos com a construção de soluções sustentáveis para o ambiente empresarial. Acreditamos que a educação vai além da sala de aula — é também ação prática, crítica e transformadora.
-Recentemente, desenvolvemos em conjunto um sistema de mensuração da pegada ecológica empresarial, uma ferramenta que permite às organizações avaliar o impacto ambiental de suas atividades e adotar práticas mais responsáveis e conscientes. Esse projeto nasceu da necessidade de conectar teoria e prática, promovendo o protagonismo dos alunos na busca por soluções reais para desafios atuais.
-Nosso objetivo é contribuir com a formação de profissionais preparados para um mercado que valoriza não só a eficiência, mas também a sustentabilidade. Através da inovação, do trabalho em equipe e do pensamento crítico, buscamos inspirar mudanças positivas dentro e fora das empresas.    </p>
+      Somos uma equipe formada por alunos e professor do curso de Aprendizagem Industrial na área de Gestão, comprometidos com a construção de soluções sustentáveis para o ambiente empresarial. Acreditamos que a educação vai além da sala de aula — é também ação prática, crítica e transformadora.
+      Recentemente, desenvolvemos em conjunto um sistema de mensuração da pegada ecológica empresarial, uma ferramenta que permite às organizações avaliar o impacto ambiental de suas atividades e adotar práticas mais responsáveis e conscientes. Esse projeto nasceu da necessidade de conectar teoria e prática, promovendo o protagonismo dos alunos na busca por soluções reais para desafios atuais.
+      Nosso objetivo é contribuir com a formação de profissionais preparados para um mercado que valoriza não só a eficiência, mas também a sustentabilidade. Através da inovação, do trabalho em equipe e do pensamento crítico, buscamos inspirar mudanças positivas dentro e fora das empresas.
     </p>
     <button onclick="fecharModalSobreNos()" style="margin-top: 20px; background-color: #ffb6c1; color: #000; border: 2px solid #ffb6c1; padding: 10px 20px; font-weight: bold; border-radius: 30px; cursor: pointer;">OK</button>
   </div>
@@ -433,13 +434,30 @@ Nosso objetivo é contribuir com a formação de profissionais preparados para u
       Para dúvidas, sugestões ou colaborações, entre em contato com os desenvolvedores do SimulaVerde:
     </p>
     <p>
-      📧 <strong>Email:</strong> cristian.rebonatto@edu.sc.senai.br OU juliocezarffranca@gmail.com<br> <br>
-      📞 <strong>Telefone:</strong> (49) 9806-6301 <br> <br>  
+      📧 <strong>Email:</strong> cristian.rebonatto@edu.sc.senai.br OU juliocezarffranca@gmail.com<br><br>
+      📞 <strong>Telefone:</strong> (49) 9806-6301 <br><br>
       🏫 <strong>Instituição:</strong> Senai - Serviço Nacional de Aprendizagem Industrial – Disciplina de Processos logísticos e de almoxarifado
     </p>
     <button onclick="fecharModalContato()" style="margin-top: 20px; background-color: #ffb6c1; color: #000; border: 2px solid #ffb6c1; padding: 10px 20px; font-weight: bold; border-radius: 30px; cursor: pointer;">OK</button>
   </div>
 </div>
+
+<!-- ✅ Caixinha cinza adicionada abaixo -->
+<div style="
+  margin: 30px auto;
+  background-color: #ccc;
+  color: #000;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 15px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+">
+  💡 PATROCINE AQUI E NOS AJUDE A MELHORAR 
+</div>
+
                 
 
 </body>
