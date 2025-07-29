@@ -115,6 +115,7 @@
   </style>
 </head>
 
+
 <body>
 
   <header>SimulaVerde - Negócios inteligentes gerando impacto consciente!</header>
@@ -128,8 +129,6 @@
       <button onclick="mostrarGrafico()">MOSTRAR GRÁFICO</button>
       <button onclick="resetarTudo()">RESETAR</button>
       <button onclick="calcularPegadaCO2()">CALCULAR PEGADA CO₂</button>
-
-
       <div id="resultadoFinal" style="margin-top: 10px; font-weight: bold;"></div>
       <div id="resultadoCO2" style="margin-top: 10px; font-weight: bold;"></div>
 
@@ -163,8 +162,6 @@
   </div>
   <div id="info1" class="info-box-topo" style="display: none;"></div>
   <div id="info2" class="info-box-topo" style="display: none;"></div>
-</div>
-
   </div>
 
   <canvas id="graficoResultados" width="400" height="300" style="margin: 20px auto; display: block;"></canvas>
@@ -409,6 +406,35 @@ function fecharModalContato() {
 }
 
   
+// --- Modal Patrocínio ---
+const btnPat = document.getElementById('abrirPatrocinio');
+const modalPat = document.getElementById('modalPatrocinio');
+
+if (btnPat && modalPat) {
+  btnPat.addEventListener('click', () => {
+    modalPat.style.display = 'block';
+    modalPat.setAttribute('aria-hidden', 'false');
+  });
+}
+
+function fecharModalPatrocinio() {
+  modalPat.style.display = 'none';
+  modalPat.setAttribute('aria-hidden', 'true');
+}
+
+// Fecha clicando fora do conteúdo
+window.addEventListener('click', (e) => {
+  if (e.target === modalPat) fecharModalPatrocinio();
+});
+
+// Fecha com ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalPat.style.display === 'block') {
+    fecharModalPatrocinio();
+  }
+});
+
+
   </script>
   
  <!-- Modal de Informações (Info 1 - SOBRE NÓS) -->
@@ -440,25 +466,97 @@ function fecharModalContato() {
     </p>
     <button onclick="fecharModalContato()" style="margin-top: 20px; background-color: #ffb6c1; color: #000; border: 2px solid #ffb6c1; padding: 10px 20px; font-weight: bold; border-radius: 30px; cursor: pointer;">OK</button>
   </div>
+</div>          
+<style>
+  /* Estilo verdinho, combina com seu site */
+  .sv-email{display:flex; gap:10px; align-items:center; margin:14px 0;}
+  .sv-email__btn{
+    padding:12px 16px; border:0; border-radius:10px; cursor:pointer;
+    background:#6fc25a; color:#0f2a14; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,.15);
+    transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  }
+  .sv-email__btn:hover{ transform: translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.2); }
+  .sv-email__box{
+    padding:10px 12px; background:#f7faff; border:1px solid rgba(0,0,0,.08);
+    border-radius:8px; font-weight:600; color:#163a18; box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+</style>
+<!-- ===== CTA de Patrocínio com painel expansível ===== -->
+<div class="sv-bar">
+  <button class="sv-bar__btn" id="sv-cta-btn" type="button" aria-expanded="false">
+     💡 PATROCINE AQUI E NOS AJUDE A MELHORAR 
+  </button>
 </div>
 
-<!-- ✅ Caixinha cinza adicionada abaixo -->
-<div style="
-  margin: 30px auto;
-  background-color: #ccc;
-  color: #000;
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 15px;
-  width: 90%;
-  max-width: 600px;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
-">
-  💡 PATROCINE AQUI E NOS AJUDE A MELHORAR 
+<div id="sv-cta-panel" class="sv-panel" hidden>
+  <!-- >>> Edite livremente este conteúdo inicial <<< -->
+  <h3>Como apoiar o SimulaVerde 💚</h3>
+      <p>Entre em contato conosco</p>
+  <ul>
+    <li><strong>Email:</strong> cristian.rebonatto@edu.sc.senai.br</li>
+    <li></a> <strong>Telefone:</strong> (49) 9806-6301 </li>
+  </ul>
 </div>
 
-                
+<style>
+  /* Barra / Botão (combina com seu tema verde) */
+  .sv-bar{
+    max-width: 820px; margin: 28px auto; border-radius: 18px;
+    background: linear-gradient(135deg,#9be37b,#6fc25a);
+    box-shadow: 0 10px 24px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.25);
+    display:flex; justify-content:center; padding:10px;
+  }
+  .sv-bar__btn{
+    border:1px solid rgba(0,0,0,.08); background:#f7faff; color:#163a18;
+    font:700 14.5px/1 "Segoe UI",system-ui,sans-serif; letter-spacing:.3px;
+    padding:14px 22px; border-radius:12px; cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .sv-bar__btn:hover{ transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.2); }
+
+  /* Painel expansível (suave) */
+  .sv-panel{
+    max-width: 820px; margin: 10px auto 24px; background:#ffffff; color:#1c3b1d;
+    border:1px solid rgba(0,0,0,.08); border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.12);
+    padding: 0 16px; overflow: hidden;
+    transition: max-height .25s ease, padding .2s ease, opacity .2s ease;
+    opacity: 0; max-height: 0;
+  }
+  .sv-panel.is-open{
+    padding: 16px; opacity: 1; max-height: 800px; /* ajuste se o conteúdo for maior */
+  }
+  .sv-panel h3{ margin:6px 0 8px; }
+  .sv-panel p, .sv-panel li{ font: 500 15px/1.4 "Segoe UI", system-ui, sans-serif; }
+</style>
+
+<script>
+  // Elementos
+  const svBtn   = document.getElementById('sv-cta-btn');
+  const svPanel = document.getElementById('sv-cta-panel');
+
+  // Toggle abre/fecha
+  svBtn.addEventListener('click', () => {
+    const aberto = svPanel.classList.toggle('is-open');
+    svPanel.hidden = !aberto;
+    svBtn.setAttribute('aria-expanded', String(aberto));
+  });
+
+  // Função opcional: trocar o conteúdo depois (quando você decidir)
+  // Exemplo de uso: svSetPatrocinioConteudo('<p>Meu e‑mail: exemplo@dominio.com</p>');
+  function svSetPatrocinioConteudo(html){
+    svPanel.innerHTML = html;
+    // Garante que o painel abra quando você definir o conteúdo
+    if (svPanel.hidden) {
+      svPanel.hidden = false;
+      svPanel.classList.add('is-open');
+      svBtn.setAttribute('aria-expanded', 'true');
+    }
+  }
+</script>
+
+
+
 
 </body>
 
